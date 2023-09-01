@@ -1,11 +1,27 @@
-package main
+package gotrees
 
+// Comparison function for building a tree.
+// First argument is the parent, second argument is the child
+// you can encapsulate your logic for parent/child relationship inside the function
+type CompareFunc[T any] func(T, T) bool
+
+// Comparison function for searching node.
+// First argument is the node, second argument is the search parameter
+// You can encapsulate your logic for search inside it
+type FindFunc[T any] func(n *Node[T], C interface{}) bool
+
+// The node structure. Each node is a container for any type of structs or primative types.
+// Node can be identified by `Id`, which helps in fast searching and doesn't require comparison function.
+// Id value is the responsibility of the consumer, you can use any identification method to identify nodes.
+// If Id is repeated within a tree, first occurance will be picked during FindId()
 type Node[T any] struct {
 	Id       string
 	Data     T
 	Children []*Node[T]
 }
 
+// Describes the full details of a Node.
+// Is used only as a result of FindFullDFS() receiver function.
 type Details[T any] struct {
 	Node     *Node[T]
 	Parent   *Node[T]
@@ -13,14 +29,7 @@ type Details[T any] struct {
 	Siblings []*Node[T]
 }
 
-type Person struct {
-	Name string
-	Age  int
-}
-
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
-// find node by its Id
+// find node by its Id and return it
 func (n *Node[T]) FindId(id string) *Node[T] {
 	if n.Id == id {
 		return n
@@ -36,10 +45,8 @@ func (n *Node[T]) FindId(id string) *Node[T] {
 	return nil
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
 // Find node by compare function, using Breadth First Search (BFS) algorithm.
-func (n *Node[T]) FindBFS(target interface{}, f func(*Node[T], interface{}) bool) *Node[T] {
+func (n *Node[T]) FindBFS(target interface{}, f FindFunc[T]) *Node[T] {
 
 	queue := make([]*Node[T], 0)
 	queue = append(queue, n)
@@ -61,10 +68,8 @@ func (n *Node[T]) FindBFS(target interface{}, f func(*Node[T], interface{}) bool
 	return nil
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
 // Find node by comparison function, using Depth First Search (DFS) algorithm.
-func (n *Node[T]) FindDFS(target interface{}, f func(*Node[T], interface{}) bool) *Node[T] {
+func (n *Node[T]) FindDFS(target interface{}, f FindFunc[T]) *Node[T] {
 	if f(n, target) {
 		return n
 	}
@@ -80,25 +85,21 @@ func (n *Node[T]) FindDFS(target interface{}, f func(*Node[T], interface{}) bool
 	return nil
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
 // Find node by comparison function, using Depth First Search (DFS) algorithm, and return full node details.
-func (n *Node[T]) FindFullDFS(target interface{}, f func(*Node[T], interface{}) bool) Details[T] {
+func (n *Node[T]) FindFullDFS(target interface{}, f FindFunc[T]) Details[T] {
 	det := findNodeFullDFS(n, nil, 0, target, f)
 	return det
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
-// Find all leaves starting from node
+// Find all leaves starting from object node
+// Object node is conisdered root node
 func (n *Node[T]) Leaves() []*Node[T] {
 	leaves := findLeavesDFS[T](n, []*Node[T]{})
 	return leaves
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
-// Find depth starting from current node. Node is considered as Root node
+// Find depth starting from object node.
+// Node is considered as Root node
 func (n *Node[T]) Depth() int {
 	if n == nil {
 		return 0
@@ -122,9 +123,7 @@ func (n *Node[T]) Depth() int {
 	return depth
 }
 
-// ----------------------------------------------------------------------------------------------------------------------------------------
-
-// List all nodes at certain depth, starting from provided node which is considered as root node
+// List all nodes at certain depth, starting from object node which is considered as root node
 func (n *Node[T]) Level(d int) []*Node[T] {
 	result := listNodesAtDepth(n, d, 0, []*Node[T]{})
 	return result
