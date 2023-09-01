@@ -1,9 +1,5 @@
 package gotrees
 
-import (
-	gotrees "github.com/hanymamdouh82/gotrees"
-)
-
 type Person struct {
 	Name string
 	Age  int
@@ -11,7 +7,7 @@ type Person struct {
 }
 
 var (
-	developer1 = gotrees.Node[Person]{
+	developer1 = Node[Person]{
 		Id: "5",
 		Data: Person{
 			Name: "Zaher",
@@ -19,7 +15,7 @@ var (
 		},
 	}
 
-	developer2 = gotrees.Node[Person]{
+	developer2 = Node[Person]{
 		Id: "4",
 		Data: Person{
 			Name: "Amr",
@@ -27,7 +23,7 @@ var (
 		},
 	}
 
-	developer4 = gotrees.Node[Person]{
+	developer4 = Node[Person]{
 		Id: "44",
 		Data: Person{
 			Name: "Jebril",
@@ -35,7 +31,7 @@ var (
 		},
 	}
 
-	developer3 = gotrees.Node[Person]{
+	developer3 = Node[Person]{
 		Id: "3",
 		Data: Person{
 			Name: "Doaa",
@@ -43,31 +39,31 @@ var (
 		},
 	}
 
-	teamleader1 = gotrees.Node[Person]{
+	teamleader1 = Node[Person]{
 		Id: "2",
 		Data: Person{
 			Name: "Mezo",
 			Age:  40,
 		},
-		Children: []*gotrees.Node[Person]{&developer1, &developer2, &developer4},
+		Children: []*Node[Person]{&developer1, &developer2, &developer4},
 	}
 
-	teamleader2 = gotrees.Node[Person]{
+	teamleader2 = Node[Person]{
 		Id: "1",
 		Data: Person{
 			Name: "Hager",
 			Age:  38,
 		},
-		Children: []*gotrees.Node[Person]{&developer3},
+		Children: []*Node[Person]{&developer3},
 	}
 
-	boss = gotrees.Node[Person]{
+	boss = Node[Person]{
 		Id: "0",
 		Data: Person{
 			Name: "Hany",
 			Age:  41,
 		},
-		Children: []*gotrees.Node[Person]{&teamleader1, &teamleader2},
+		Children: []*Node[Person]{&teamleader1, &teamleader2},
 	}
 
 	rawData = []Person{

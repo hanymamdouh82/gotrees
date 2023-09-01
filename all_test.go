@@ -3,13 +3,12 @@ package gotrees
 import (
 	"testing"
 
-	gotrees "github.com/hanymamdouh82/gotrees"
 	"golang.org/x/exp/slices"
 )
 
 func Test_FindBFS(t *testing.T) {
 	expect := "4"
-	got := boss.FindBFS("Amr", func(n *gotrees.Node[Person], s interface{}) bool {
+	got := boss.FindBFS("Amr", func(n *Node[Person], s interface{}) bool {
 		return n.Data.Name == s
 	})
 
@@ -23,7 +22,7 @@ func Test_FindBFS(t *testing.T) {
 // Test is comapred for memory addresses
 func Test_FindDFS(t *testing.T) {
 	expect := &developer2
-	got := boss.FindDFS("Amr", func(n *gotrees.Node[Person], s interface{}) bool {
+	got := boss.FindDFS("Amr", func(n *Node[Person], s interface{}) bool {
 		return n.Data.Name == s
 	})
 
@@ -46,7 +45,7 @@ func Test_FindId(t *testing.T) {
 
 // Test leaves starting from root
 func Test_Leaves(t *testing.T) {
-	expect := []*gotrees.Node[Person]{&developer1, &developer2, &developer3, &developer4}
+	expect := []*Node[Person]{&developer1, &developer2, &developer3, &developer4}
 	got := boss.Leaves()
 
 	for _, v := range got {
@@ -68,7 +67,7 @@ func Test_Depth(t *testing.T) {
 // Test uses compare function
 func Test_FindFullDFS(t *testing.T) {
 	expect := &developer2
-	det := boss.FindFullDFS("Amr", func(n *gotrees.Node[Person], t interface{}) bool {
+	det := boss.FindFullDFS("Amr", func(n *Node[Person], t interface{}) bool {
 		return n.Data.Name == t
 	})
 
@@ -79,7 +78,7 @@ func Test_FindFullDFS(t *testing.T) {
 
 // Test scan specific level
 func Test_Level(t *testing.T) {
-	expect := []*gotrees.Node[Person]{&developer1, &developer2, &developer3, &developer4}
+	expect := []*Node[Person]{&developer1, &developer2, &developer3, &developer4}
 	got := boss.Level(3)
 
 	for _, v := range got {
@@ -98,7 +97,7 @@ func Test_Build(t *testing.T) {
 		return p.Name == c.Boss
 	}
 
-	roots := gotrees.Build[Person](rawData, compareFunc)
+	roots := Build[Person](rawData, compareFunc)
 	if len(roots) != expectLen {
 		t.Errorf("Expected length %v", expectLen)
 	}
