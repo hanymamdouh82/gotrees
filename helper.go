@@ -115,3 +115,21 @@ func findRoots[T any](values []T, compareFunc CompareFunc[T]) []T {
 
 	return roots
 }
+
+// Generate slice of T starting from object node as the root
+// This is anti-build process
+func toSlice[T any](node *Node[T], s *[]T) []T {
+	// Append root to the slice
+	*s = append(*s, node.Data)
+
+	// Traverse children and add to slice
+	if len(node.Children) != 0 {
+		for _, c := range node.Children {
+			toSlice[T](c, s)
+			// toAdd := toSlice[T](c, s)
+			// s = append(s, toAdd...)
+		}
+	}
+
+	return *s
+}

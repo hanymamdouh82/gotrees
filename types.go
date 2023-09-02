@@ -131,3 +131,10 @@ func (n *Node[T]) Level(d int) []*Node[T] {
 	result := listNodesAtDepth(n, d, 0, []*Node[T]{})
 	return result
 }
+
+// Returns slice of T objects from current Node.
+// Current Node object is considered as root node.
+func (n *Node[T]) Slice() []T {
+	s := toSlice[T](n, &[]T{})
+	return s
+}

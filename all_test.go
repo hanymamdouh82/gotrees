@@ -108,3 +108,12 @@ func Test_Build(t *testing.T) {
 		t.Errorf("Expected Root with name %s", expectName)
 	}
 }
+
+// Test convert Node to slice of type T
+func Test_Slice(t *testing.T) {
+	expect := 7
+
+	if got := len(boss.Slice()); got != expect {
+		t.Errorf("Expected %v", expect)
+	}
+}
