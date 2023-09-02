@@ -1,6 +1,9 @@
 // Copyright 2023 Hany Mamdouh. All rights reserved.
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
+//
+// All tests are excuted against dataset in provided file.
+// Test is comapred for memory addresses.
 package gotrees
 
 import (
@@ -21,8 +24,6 @@ func Test_FindBFS(t *testing.T) {
 }
 
 // Tests find node using DFS
-// Test is excuted against dataset in provided file
-// Test is comapred for memory addresses
 func Test_FindDFS(t *testing.T) {
 	expect := &developer2
 	got := boss.FindDFS("Amr", func(n *Node[Person], s interface{}) bool {
@@ -122,4 +123,29 @@ func Test_Slice(t *testing.T) {
 // This test print out tree to stdout, it is not intended to be used as a varification in build line
 func Test_PrintTree(t *testing.T) {
 	PrintTree[Person](&boss, 0)
+}
+
+// Testing tree size
+func Test_Size(t *testing.T) {
+	expect := 7
+
+	if got := boss.Size(); got != expect {
+		t.Errorf("Expected %v\n", expect)
+	}
+}
+
+// Testing LCA
+func Test_LCA(t *testing.T) {
+	expect := &teamleader1
+	if gotlca := boss.LCA(&developer1, &developer2); gotlca != expect {
+		t.Errorf("Expected %v", expect)
+	}
+}
+
+// Testing serialization to JSON
+func Test_SerializeJSON(t *testing.T) {
+
+	if _, err := boss.SerializeJSON(); err != nil {
+		t.Errorf("Failed to serialize")
+	}
 }

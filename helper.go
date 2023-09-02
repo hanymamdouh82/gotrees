@@ -3,6 +3,10 @@
 // license that can be found in the LICENSE file.
 package gotrees
 
+import (
+	"encoding/json"
+)
+
 // helper used in recursive search for finding a leaves using DFS algorithm.
 // leaves are evaluated starting from input `root` as the root node.
 func findLeavesDFS[T any](node *Node[T], leaves []*Node[T]) []*Node[T] {
@@ -132,4 +136,90 @@ func toSlice[T any](node *Node[T], s *[]T) []T {
 	}
 
 	return *s
+}
+
+// Tree size use for recuresive operation to get tree size
+func size[T any](node *Node[T], currentSize *int) int {
+	*currentSize++
+	if len(node.Children) != 0 {
+		for _, n := range node.Children {
+			size(n, currentSize)
+		}
+	}
+	return *currentSize
+}
+
+// FindLowestCommonAncestor finds the lowest common ancestor of two nodes in a tree.
+func findLowestCommonAncestor[T any](root, p, q *Node[T]) *Node[T] {
+	if root == nil {
+		return nil
+	}
+
+	// If the current node matches either p or q, it is the LCA.
+	if root == p || root == q {
+		return root
+	}
+
+	// Recursively search for p and q in the children nodes.
+	var lca *Node[T]
+	for _, child := range root.Children {
+		childLCA := findLowestCommonAncestor(child, p, q)
+		if childLCA != nil {
+			if lca != nil {
+				// If a previous LCA was found, this node is the new LCA.
+				return root
+			}
+			lca = childLCA
+		}
+	}
+
+	// Return the LCA found in the children (if any).
+	return lca
+}
+
+// SerializeTreeToJSON serializes a tree into JSON format.
+// func SerializeTreeToJSON[T any](root *Node[T]) (string, error) {
+// 	// Use a map to represent each node as a JSON object.
+// 	nodeMap, err := serializeNode(root)
+// 	if err != nil {
+// 		return "", err
+// 	}
+
+// 	// Convert the map to a JSON string.
+// 	jsonData, err := json.Marshal(nodeMap)
+// 	if err != nil {
+// 		return "", err
+// 	}
+
+// 	return string(jsonData), nil
+// }
+
+// Recursive function to serialize a node and its children.
+func serializeNode[T any](node *Node[T]) (map[string]interface{}, error) {
+	if node == nil {
+		return nil, nil
+	}
+
+	// Future refactor: replace json marshal/unmarsham with another efficient implementation
+	nodeData := make(map[string]interface{}, 0)
+	j, err := json.Marshal(node.Data)
+	if err != nil {
+		return nil, err
+	}
+	json.Unmarshal(j, &nodeData)
+
+	// Serialize children recursively.
+	if len(node.Children) > 0 {
+		childNodes := make([]map[string]interface{}, len(node.Children))
+		for i, child := range node.Children {
+			childNodes[i], err = serializeNode(child)
+			if err != nil {
+				return nil, err
+			}
+		}
+		nodeData["Children"] = childNodes
+	}
+
+	// Add the node data to the parent node map.
+	return nodeData, nil
 }

@@ -3,6 +3,8 @@
 // license that can be found in the LICENSE file.
 package gotrees
 
+import "encoding/json"
+
 // Comparison function for building a tree.
 // First argument is the parent, second argument is the child
 // you can encapsulate your logic for parent/child relationship inside the function
@@ -126,6 +128,14 @@ func (n *Node[T]) Depth() int {
 	return depth
 }
 
+// Returns tree size.
+// Tree size is the count of all nodes inside a tree. Consider current node object as root node.
+func (n *Node[T]) Size() int {
+	s := new(int)
+	size := size(n, s)
+	return size
+}
+
 // List all nodes at certain depth, starting from object node which is considered as root node
 func (n *Node[T]) Level(d int) []*Node[T] {
 	result := listNodesAtDepth(n, d, 0, []*Node[T]{})
@@ -137,4 +147,28 @@ func (n *Node[T]) Level(d int) []*Node[T] {
 func (n *Node[T]) Slice() []T {
 	s := toSlice[T](n, &[]T{})
 	return s
+}
+
+// Returns Lowest Common Ancestor for current Node Object
+func (n *Node[T]) LCA(p, q *Node[T]) *Node[T] {
+	node := findLowestCommonAncestor[T](n, p, q)
+	return node
+}
+
+// Serialize a tree into JSON format.
+// Use as compatibile format to transfer over wire or store into NoSQL
+func (n *Node[T]) SerializeJSON() (string, error) {
+	// Use a map to represent each node as a JSON object.
+	nodeMap, err := serializeNode[T](n)
+	if err != nil {
+		return "", err
+	}
+
+	// Convert the map to a JSON string.
+	jsonData, err := json.Marshal(nodeMap)
+	if err != nil {
+		return "", err
+	}
+
+	return string(jsonData), nil
 }
