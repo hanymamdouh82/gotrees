@@ -73,9 +73,6 @@ func buildForRoot[T any](root T, values []T, compareFunc CompareFunc[T]) *Node[T
 	// Create the root node.
 	rootNode := &Node[T]{Data: root}
 
-	// Add the root node to the parent map.
-	// parentMap[root] = rootNode
-
 	// Build the tree structure.
 	for _, value := range values {
 		if compareFunc(root, value) {
@@ -177,23 +174,6 @@ func findLowestCommonAncestor[T any](root, p, q *Node[T]) *Node[T] {
 	return lca
 }
 
-// SerializeTreeToJSON serializes a tree into JSON format.
-// func SerializeTreeToJSON[T any](root *Node[T]) (string, error) {
-// 	// Use a map to represent each node as a JSON object.
-// 	nodeMap, err := serializeNode(root)
-// 	if err != nil {
-// 		return "", err
-// 	}
-
-// 	// Convert the map to a JSON string.
-// 	jsonData, err := json.Marshal(nodeMap)
-// 	if err != nil {
-// 		return "", err
-// 	}
-
-// 	return string(jsonData), nil
-// }
-
 // Recursive function to serialize a node and its children.
 func serializeNode[T any](node *Node[T]) (map[string]interface{}, error) {
 	if node == nil {
@@ -222,4 +202,42 @@ func serializeNode[T any](node *Node[T]) (map[string]interface{}, error) {
 
 	// Add the node data to the parent node map.
 	return nodeData, nil
+}
+
+// Recursive function to deserialize a node and its children from a map.
+func deserializeJSON[T any](nodeData map[string]interface{}) *Node[T] {
+	if nodeData == nil {
+		return nil
+	}
+
+	// Extract Id if provided
+	var id string
+	id, ok := nodeData["Id"].(string)
+	if !ok {
+		id = ""
+	}
+
+	// Convert map to T struct
+	var temp T
+	j, _ := json.Marshal(nodeData)
+	json.Unmarshal(j, &temp)
+
+	// Create a new node.
+	node := &Node[T]{
+		Id:   id,
+		Data: temp,
+	}
+
+	// Deserialize children recursively.
+	childrenData, hasChildren := nodeData["Children"]
+	if hasChildren {
+		children := childrenData.([]interface{})
+		for _, childData := range children {
+			childNodeData := childData.(map[string]interface{})
+			childNode := deserializeJSON[T](childNodeData)
+			node.Children = append(node.Children, childNode)
+		}
+	}
+
+	return node
 }

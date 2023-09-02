@@ -149,3 +149,14 @@ func Test_SerializeJSON(t *testing.T) {
 		t.Errorf("Failed to serialize")
 	}
 }
+
+// Testing deserialize
+func Test_DeserializeJSON(t *testing.T) {
+	j, _ := boss.SerializeJSON()
+	expect := 4
+	got, err := DeserializeJSONToTree[Person](j)
+	leaves := len(got.Leaves())
+	if err != nil || leaves != expect {
+		t.Errorf("Failed to serialize")
+	}
+}

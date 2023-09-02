@@ -4,6 +4,7 @@
 package gotrees
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
@@ -36,4 +37,18 @@ func PrintTree[T any](node *Node[T], level int) {
 	for _, child := range node.Children {
 		PrintTree(child, level+1)
 	}
+}
+
+// DeserializeJSONToTree deserializes a JSON representation into a tree structure.
+// JSON must contain `Children` key, that will be used to identify children and relationship
+func DeserializeJSONToTree[T any](jsonData string) (*Node[T], error) {
+	// Unmarshal the JSON data into a map.
+	var nodeMap map[string]interface{}
+	err := json.Unmarshal([]byte(jsonData), &nodeMap)
+	if err != nil {
+		return nil, err
+	}
+
+	// Reconstruct the tree from the map.
+	return deserializeJSON[T](nodeMap), nil
 }
