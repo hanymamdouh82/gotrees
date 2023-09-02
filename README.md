@@ -41,6 +41,18 @@ go get github.com/yourusername/gotrees
 
 ## Examples
 
+### Create New Tree
+
+```go
+// A tree is simply a root node.
+// Call Tree to build new root node.
+root := Tree()
+
+// You can then add nodes to it as children.
+// This will add empty node and return is memory reference.
+child1 := root.AddNode()
+```
+
 ### Searching for Nodes
 
 ```go

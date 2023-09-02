@@ -34,6 +34,13 @@ type Details[T any] struct {
 	Siblings []*Node[T]
 }
 
+// Adds node to the current node and returns its memory reference.
+func (n *Node[T]) AddNode() *Node[T] {
+	node := Node[T]{}
+	n.Children = append(n.Children, &node)
+	return &node
+}
+
 // find node by its Id and return it
 func (n *Node[T]) FindId(id string) *Node[T] {
 	if n.Id == id {

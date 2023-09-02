@@ -8,6 +8,13 @@ import (
 	"fmt"
 )
 
+// Builds empty tree
+// Tree root is a Node object of type T
+func Tree[T any]() *Node[T] {
+	root := Node[T]{}
+	return &root
+}
+
 // Build a tree out from slice of objects using comparison function to determine parent/child relationship.
 // Implement your own logic in compareFunc to specify parent/child relationship
 func Build[T any](values []T, compareFunc CompareFunc[T]) []*Node[T] {
