@@ -12,6 +12,9 @@ import (
 	"golang.org/x/exp/slices"
 )
 
+// Test_FindBFS tests the FindBFS function.
+// It searches for a node with the name "Amr" using Breadth First Search (BFS).
+// The expected result is a node with the ID "4".
 func Test_FindBFS(t *testing.T) {
 	expect := "4"
 	got := boss.FindBFS("Amr", func(n *Node[Person], s interface{}) bool {
