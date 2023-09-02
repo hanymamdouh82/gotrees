@@ -117,3 +117,9 @@ func Test_Slice(t *testing.T) {
 		t.Errorf("Expected %v", expect)
 	}
 }
+
+// Testing printout of tree
+// This test print out tree to stdout, it is not intended to be used as a varification in build line
+func Test_PrintTree(t *testing.T) {
+	PrintTree[Person](&boss, 0)
+}

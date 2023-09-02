@@ -5,7 +5,6 @@ package gotrees
 
 import (
 	"fmt"
-	"strings"
 )
 
 // Build a tree out from slice of objects using comparison function to determine parent/child relationship.
@@ -29,7 +28,11 @@ func PrintTree[T any](node *Node[T], level int) {
 	if node == nil {
 		return
 	}
-	fmt.Printf("%v%s%v\n", level, strings.Repeat("  ", level), node.Data)
+	sep := ""
+	for i := 0; i < level+1; i++ {
+		sep = sep + "  "
+	}
+	fmt.Printf("%v%s%v\n", level, sep, node.Data)
 	for _, child := range node.Children {
 		PrintTree(child, level+1)
 	}
