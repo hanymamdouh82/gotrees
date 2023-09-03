@@ -9,8 +9,8 @@ the following summarizes features to be added to package.
 
 # Tree Operations:
 
-- [ ] Insertion: Add a new node to the tree.
-- [ ] Deletion: Remove a node from the tree.
+- [x] Insertion: Add a new node to the tree.
+- [x] Deletion: Remove a node from the tree.
 - [x] Search: Find a specific node in the tree.
 - [ ] Update: Modify the data of a node in the tree.
 
@@ -60,7 +60,7 @@ the following summarizes features to be added to package.
 
 ## Tree Trimming:
 
-- [x] Trim Tree: Remove nodes that do not meet certain criteria (e.g., values less than a threshold).
+- [ ] Trim Tree: Remove nodes that do not meet certain criteria (e.g., values less than a threshold).
 
 ## Iterative Traversal:
 

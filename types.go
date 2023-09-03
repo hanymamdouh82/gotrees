@@ -5,6 +5,7 @@ package gotrees
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 // Comparison function for building a tree.
@@ -245,6 +246,30 @@ func (n *Node[T]) PathToLeaves() [][]*Node[T] {
 	}
 
 	return paths
+}
+
+// Deletes a node from root. It finds the node and delete it regardless its location.
+// You don't need to provide any comparison function to delete.
+func (n *Node[T]) Delete(node *Node[T]) error {
+	if n == node {
+		return errors.New("cannot delete root node")
+	}
+
+	det := findFullByMem[T](n, nil, 0, node)
+	if len(det.Parent.Children) == 0 {
+		return errors.New("children is empty")
+	}
+
+	newChildren := make([]*Node[T], 0)
+	for _, child := range det.Parent.Children {
+		if child != node {
+			newChildren = append(newChildren, child)
+		}
+	}
+	det.Parent.Children = make([]*Node[T], 0)
+	det.Parent.Children = append(det.Parent.Children, newChildren...)
+
+	return nil
 }
 
 // Trim leaves deletes all leaves and returns deleted objects.

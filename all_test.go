@@ -247,3 +247,21 @@ func Test_TrimLeaves(t *testing.T) {
 		}
 	}
 }
+
+// Testing deletion for a node inside a tree.
+// Testing for success of normal deletion
+func Test_Delete(t *testing.T) {
+	expect := &teamleader1
+	boss.Delete(&teamleader2)
+	if boss.Children[0] != expect {
+		t.Errorf("Expected memory address %v", expect)
+	}
+}
+
+// Testing deletion for a node inside a tree
+func Test_Delete_Self(t *testing.T) {
+	err := boss.Delete(&boss)
+	if err == nil {
+		t.Error("Expected nil")
+	}
+}

@@ -27,6 +27,8 @@ The Go Tree Package provides a flexible and generic tree data structure along wi
 
 - **Trim Leaves**: Trim tree leaves and return trimmed nodes.
 
+- **Delete Node**: Delete any node without comparison function using memory address.
+
 - **Building Trees**: Build trees from slices of data using a comparison function to determine parent-child relationships.
 
 - **Node Identification**: Nodes can be identified by `Id`, making it efficient for fast searching without comparison functions.
