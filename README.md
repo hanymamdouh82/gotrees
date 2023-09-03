@@ -25,6 +25,8 @@ The Go Tree Package provides a flexible and generic tree data structure along wi
 
 - **List Nodes at Certain Depth**: Get a list of nodes at a specified depth in the tree.
 
+- **Trim Leaves**: Trim tree leaves and return trimmed nodes.
+
 - **Building Trees**: Build trees from slices of data using a comparison function to determine parent-child relationships.
 
 - **Node Identification**: Nodes can be identified by `Id`, making it efficient for fast searching without comparison functions.
