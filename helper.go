@@ -261,3 +261,49 @@ func rootToNode[T any](root *Node[T], target *Node[T]) []*Node[T] {
 
 	return nil // Target node not found in the subtree.
 }
+
+// Recursive helper function for searching for all matches based on comparison function.
+func findAllDFS[T any](node *Node[T], target interface{}, f FindFunc[T], matches []*Node[T]) []*Node[T] {
+	if f(node, target) {
+		matches = append(matches, node)
+		return matches
+	}
+
+	if len(node.Children) > 0 {
+		for _, child := range node.Children {
+			// if foundNode := findByNameDFS(child, name); foundNode != nil {
+			if foundNode := child.FindDFS(target, f); foundNode != nil {
+				// return foundNode
+				matches = append(matches, foundNode)
+			}
+		}
+	}
+	return matches
+}
+
+// Recursive helper function searching tree using memeory addresses
+func findFullByMem[T any](node *Node[T], parent *Node[T], depth int, target *Node[T]) Details[T] {
+	if node == target {
+		siblings := make([]*Node[T], 0)
+		for _, n := range parent.Children {
+			if n != node {
+				siblings = append(siblings, n)
+			}
+		}
+		return Details[T]{
+			Node:     node,
+			Parent:   parent,
+			Depth:    depth,
+			Siblings: siblings,
+		}
+	}
+
+	if len(node.Children) > 0 {
+		for _, child := range node.Children {
+			if found := findFullByMem(child, node, depth+1, target); found.Node != nil {
+				return found
+			}
+		}
+	}
+	return Details[T]{}
+}

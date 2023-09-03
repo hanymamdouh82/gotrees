@@ -213,5 +213,37 @@ func Test_PathToLeaves(t *testing.T) {
 			}
 		}
 	}
+}
 
+// Tests find nodes using comaprison function
+func Test_FindAllDFS(t *testing.T) {
+	expect := []*Node[Person]{&teamleader2, &developer3}
+	got := boss.FindAllDFS("Amr", func(n *Node[Person], s interface{}) bool {
+		return n.Data.Age >= 37 && n.Data.Age <= 38
+	})
+
+	if len(got) == 0 {
+		t.Errorf("Expected %v", len(expect))
+	}
+
+	for i, n := range expect {
+		if expect[i] != n {
+			t.Errorf("Exepected memory address %v", n)
+		}
+	}
+}
+
+// Testing trimming leaves
+func Test_TrimLeaves(t *testing.T) {
+	expect := []*Node[Person]{&developer1, &developer5, &developer4, &developer3}
+	got := boss.TrimLeaves()
+	if len(got) != len(expect) {
+		t.Errorf("Expected length %v", len(expect))
+	}
+
+	for i, n := range expect {
+		if expect[i] != n {
+			t.Errorf("Exepected memory address %v", n)
+		}
+	}
 }

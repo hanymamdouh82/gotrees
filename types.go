@@ -83,6 +83,8 @@ func (n *Node[T]) FindBFS(target interface{}, f FindFunc[T]) *Node[T] {
 }
 
 // Find node by comparison function, using Depth First Search (DFS) algorithm.
+// This function returns first match of comparison function.
+// For all matches use FindAllDFS
 func (n *Node[T]) FindDFS(target interface{}, f FindFunc[T]) *Node[T] {
 	if f(n, target) {
 		return n
@@ -97,6 +99,14 @@ func (n *Node[T]) FindDFS(target interface{}, f FindFunc[T]) *Node[T] {
 		}
 	}
 	return nil
+}
+
+// Find node by comparison function, using Depth First Search (DFS) algorithm.
+// This function returns first match of comparison function.
+// For all matches use FindAllDFS
+func (n *Node[T]) FindAllDFS(target interface{}, f FindFunc[T]) []*Node[T] {
+	matches := findAllDFS[T](n, target, f, []*Node[T]{})
+	return matches
 }
 
 // Find node by comparison function, using Depth First Search (DFS) algorithm, and return full node details.
@@ -235,4 +245,30 @@ func (n *Node[T]) PathToLeaves() [][]*Node[T] {
 	}
 
 	return paths
+}
+
+// Trim leaves deletes all leaves and returns deleted objects.
+func (n *Node[T]) TrimLeaves() []*Node[T] {
+	leaves := n.Leaves()
+	trimmed := make([]*Node[T], len(leaves))
+	if len(leaves) == 0 {
+		return trimmed
+	}
+
+	for idx, leaf := range leaves {
+
+		det := findFullByMem[T](n, nil, 0, leaf)
+		newChildren := make([]*Node[T], 0)
+		for _, child := range det.Parent.Children {
+			if child != leaf {
+				newChildren = append(newChildren, child)
+			}
+		}
+		det.Parent.Children = []*Node[T]{}
+		det.Parent.Children = append(det.Parent.Children, newChildren...)
+
+		trimmed[idx] = leaf
+	}
+
+	return trimmed
 }
