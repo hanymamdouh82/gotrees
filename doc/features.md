@@ -39,7 +39,7 @@ the following summarizes features to be added to package.
 
 ## Path and Sum Operations:
 
-- [ ] Root-to-Leaf Paths: Find all paths from the root to the leaf nodes.
+- [x] Root-to-Leaf Paths: Find all paths from the root to the leaf nodes.
 - [ ] Path Sum: Check if there exists a path with a given sum in the tree.
 - [x] Lowest Common Ancestor (LCA): Find the lowest common ancestor of two nodes.
 
@@ -55,8 +55,8 @@ the following summarizes features to be added to package.
 
 ## Deletion Strategies:
 
-- [x] Lazy Deletion: Mark nodes as deleted without actually removing them.
-- [x] Real Deletion: Physically remove nodes marked for deletion.
+- [ ] Lazy Deletion: Mark nodes as deleted without actually removing them.
+- [ ] Real Deletion: Physically remove nodes marked for deletion.
 
 ## Tree Trimming:
 

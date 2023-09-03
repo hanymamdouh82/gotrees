@@ -3,7 +3,9 @@
 // license that can be found in the LICENSE file.
 package gotrees
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 // Comparison function for building a tree.
 // First argument is the parent, second argument is the child
@@ -178,4 +180,59 @@ func (n *Node[T]) SerializeJSON() (string, error) {
 	}
 
 	return string(jsonData), nil
+}
+
+// Get all nodes from root node to a specific node.
+func (n *Node[T]) PathToNode(target *Node[T]) []*Node[T] {
+	path := rootToNode[T](n, target)
+	return path
+}
+
+// Get path from node to node.
+// Object Node is considered as root node.
+// This function depends on LCA and PathToNode.
+func (n *Node[T]) PathN2N(p, q *Node[T]) []*Node[T] {
+	path := []*Node[T]{}
+
+	// get LCA for both nodes
+	lca := n.LCA(p, q)
+	if lca == nil {
+		return path
+	}
+
+	// get path from p to lca
+	pPath := lca.PathToNode(p)
+
+	// get path from p to lca
+	qPath := lca.PathToNode(q)
+
+	// reverse path order for p
+	for i := 0; i < len(pPath)/2; i++ {
+		left := pPath[i]
+		right := pPath[len(pPath)-i-1]
+
+		// swap
+		pPath[i] = right
+		pPath[len(pPath)-i-1] = left
+	}
+
+	path = append(path, pPath...)
+	path = append(path, qPath[1:]...)
+
+	return path
+}
+
+// Get paths from node to leaves. Object node is considered root
+// this function depends on PathToNode and Leaves()
+func (n *Node[T]) PathToLeaves() [][]*Node[T] {
+	leaves := n.Leaves()
+	paths := make([][]*Node[T], len(leaves))
+	if len(leaves) != 0 {
+		for idx, leaf := range leaves {
+			path := n.PathToNode(leaf)
+			paths[idx] = path
+		}
+	}
+
+	return paths
 }

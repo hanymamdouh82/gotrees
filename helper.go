@@ -241,3 +241,23 @@ func deserializeJSON[T any](nodeData map[string]interface{}) *Node[T] {
 
 	return node
 }
+
+// Recursive helper function to get all nodes from root to a specific node
+func rootToNode[T any](root *Node[T], target *Node[T]) []*Node[T] {
+	if root == nil {
+		return nil
+	}
+
+	if root == target {
+		return []*Node[T]{root}
+	}
+
+	for _, child := range root.Children {
+		path := rootToNode(child, target)
+		if len(path) > 0 {
+			return append([]*Node[T]{root}, path...)
+		}
+	}
+
+	return nil // Target node not found in the subtree.
+}

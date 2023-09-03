@@ -41,7 +41,7 @@ Please follow our coding standards when making contributions. This includes:
 
 ## Testing
 
-All contributions should include appropriate test coverage. Ensure that your changes do not break existing tests, and write new tests if necessary.
+All contributions should include appropriate test coverage. Ensure that your changes do not break existing tests, and write new tests if necessary. Make your test dependent on memory addresses comparison as much as possible.
 
 ## Pull Request Reviews
 

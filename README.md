@@ -17,6 +17,12 @@ The Go Tree Package provides a flexible and generic tree data structure along wi
 
 - **Lowest Common Ancestor (LCA)**: Determine the lowest common ancestor of two nodes in a tree.
 
+- **Path To Node**: Determine all nodes from root node to a specific node..
+
+- **Path From Node To Node**: Determine all nodes from onde node to another node in the same tree.
+
+- **Path To Leaves**: Determine all pathes from root node to leaves inside the tree.
+
 - **List Nodes at Certain Depth**: Get a list of nodes at a specified depth in the tree.
 
 - **Building Trees**: Build trees from slices of data using a comparison function to determine parent-child relationships.

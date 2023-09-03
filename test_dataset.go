@@ -24,6 +24,7 @@ var (
 			Name: "Amr",
 			Age:  24,
 		},
+		Children: []*Node[Person]{&developer5},
 	}
 
 	developer4 = Node[Person]{
@@ -31,6 +32,14 @@ var (
 		Data: Person{
 			Name: "Jebril",
 			Age:  32,
+		},
+	}
+
+	developer5 = Node[Person]{
+		Id: "5",
+		Data: Person{
+			Name: "Adham",
+			Age:  12,
 		},
 	}
 

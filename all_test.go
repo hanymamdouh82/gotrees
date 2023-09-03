@@ -163,3 +163,55 @@ func Test_DeserializeJSON(t *testing.T) {
 		t.Errorf("Failed to serialize")
 	}
 }
+
+// Testing root to node path
+// This tests path (ordered) from node object until any node
+func Test_PathToNode(t *testing.T) {
+	expect := []*Node[Person]{&boss, &teamleader1, &developer2, &developer5}
+	path := boss.PathToNode(&developer5)
+	if len(path) != len(expect) {
+		t.Errorf("Expected length: %v", len(expect))
+	}
+
+	for i, e := range path {
+		if e != expect[i] {
+			t.Errorf("Expected memroy address: %v", expect[i])
+		}
+	}
+}
+
+// Testing root to node path
+// This tests path (ordered) from node object until any node
+func Test_PathN2N(t *testing.T) {
+	expect := []*Node[Person]{&developer5, &developer2, &teamleader1, &boss, &teamleader2, &developer3}
+	path := boss.PathN2N(&developer5, &developer3)
+	if len(path) != len(expect) {
+		t.Errorf("Expected length: %v", len(expect))
+	}
+
+	for i, e := range path {
+		if e != expect[i] {
+			t.Errorf("Expected memroy address: %v", expect[i])
+		}
+	}
+}
+
+// Testing all paths to leaves
+func Test_PathToLeaves(t *testing.T) {
+	expect := [][]*Node[Person]{
+		{&boss, &teamleader1, &developer1},
+		{&boss, &teamleader1, &developer2, &developer5},
+		{&boss, &teamleader1, &developer4},
+		{&boss, &teamleader2, &developer3},
+	}
+	paths := boss.PathToLeaves()
+
+	for i, path := range paths {
+		for j, node := range path {
+			if expect[i][j] != node {
+				t.Errorf("Expected memory address %v", node)
+			}
+		}
+	}
+
+}
