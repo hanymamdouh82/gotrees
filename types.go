@@ -38,7 +38,14 @@ type Details[T any] struct {
 }
 
 // Adds node to the current node and returns its memory reference.
-func (n *Node[T]) AddNode() *Node[T] {
+func (n *Node[T]) AddNode(data T) *Node[T] {
+	node := Node[T]{Data: data}
+	n.Children = append(n.Children, &node)
+	return &node
+}
+
+// Adds node to the current node without data and returns its memory reference.
+func (n *Node[T]) AddBlankNode() *Node[T] {
 	node := Node[T]{}
 	n.Children = append(n.Children, &node)
 	return &node

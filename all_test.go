@@ -265,3 +265,15 @@ func Test_Delete_Self(t *testing.T) {
 		t.Error("Expected nil")
 	}
 }
+
+// Testing adding new node with data
+func Test_AddNode_WithData(t *testing.T) {
+	d := Person{}
+	d.Name = "Foo"
+	got := boss.AddNode(d)
+	if got == nil {
+		t.Error("Expected valid memory address")
+	}
+}
+
+// Testing adding new node without data
