@@ -46,7 +46,7 @@ The Go Tree Package provides a flexible and generic tree data structure along wi
 To use the Go Tree Package in your project, you can install it using `go get`:
 
 ```bash
-go get github.com/yourusername/gotrees
+go get github.com/hanymamdouh82/gotrees
 ```
 
 ## Examples
